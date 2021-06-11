@@ -1,3 +1,3 @@
 # Snake
 
-Juego de la vivorita en python, aprendiendo Git
+Juego de la viborita en python, aprendiendo Git
