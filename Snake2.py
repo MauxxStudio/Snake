@@ -25,7 +25,7 @@ pause = True
 while game:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            sys.exit()
+            game = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 dir = (dir - 1) % 4
@@ -58,7 +58,8 @@ while game:
     
     pygame.display.flip()
 
-
+pygame.quit()
+sys.exit()
     
     
     
