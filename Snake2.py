@@ -20,6 +20,7 @@ dir = 0
 food = ()
 
 game = True
+play = True
 pause = True
 
 while game:
@@ -27,36 +28,48 @@ while game:
         if event.type == pygame.QUIT:
             game = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                dir = (dir - 1) % 4
-            elif event.key == pygame.K_RIGHT:
-                dir = (dir + 1) % 4
-            else: pause = not pause
+            if play:
+                if event.key == pygame.K_LEFT:
+                    dir = (dir - 1) % 4
+                elif event.key == pygame.K_RIGHT:
+                    dir = (dir + 1) % 4
+                else: pause = not pause
+            else:
+                if event.key == pygame.K_ESCAPE:
+                    game = False
+                else: play = True
 
-    snakehead = ((snakehead[0]+directions[dir][0]) % grid[0],(snakehead[1]+directions[dir][1]) % grid[1])
+    if play == False:
 
-    if snake.count(snakehead):
-        game = False
+        snake = [ (int(grid[0]/2)-1,int(grid[1]/2)),(int(grid[0]/2),int(grid[1]/2)),(int(grid[0]/2)+1,int(grid[1]/2)) ]
+        snakehead = snake[2]
+
     else:
-        snake.append(snakehead)
-        if snakehead == food:
-            food = ()
+        snakehead = ((snakehead[0]+directions[dir][0]) % grid[0],(snakehead[1]+directions[dir][1]) % grid[1])
+
+        if snake.count(snakehead):
+            play = False
         else:
-            snake.pop(0)
-    
-    while not food:
-        food=(random.randint(0,grid[0]-1),random.randint(0,grid[1]-1))
-        if snake.count(food): food = ()
+            snake.append(snakehead)
+            if snakehead == food:
+                food = ()
+            else:
+                snake.pop(0)
+        
+        while not food:
+            food=(random.randint(0,grid[0]-1),random.randint(0,grid[1]-1))
+            if snake.count(food): food = ()
 
-    time.sleep(0.1)
+        time.sleep(0.1)
 
-    screen.fill(backColor)
-    
-    pygame.draw.rect(screen,foodColor,(food[0]*dim,food[1]*dim,dim,dim),width = 3)
-    for cell in snake:
-        pygame.draw.rect(screen,snakeColor,(cell[0]*dim,cell[1]*dim,dim,dim),width = 0)
-    
-    pygame.display.flip()
+        screen.fill(backColor)
+        
+        pygame.draw.rect(screen,foodColor,(food[0]*dim,food[1]*dim,dim,dim),width = 3)
+        for cell in snake:
+            pygame.draw.rect(screen,snakeColor,(cell[0]*dim,cell[1]*dim,dim,dim),width = 0)
+        
+        pygame.display.flip()
+
 
 pygame.quit()
 sys.exit()
